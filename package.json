@@ -1,0 +1,27 @@
+{
+  "name": "adivina-numero",
+  "version": "1.0.0",
+  "description": "Mi primer proyecto de JavaScript",
+  "homepage": "https://github.com/analacima/adivina-numero#readme",
+  "bugs": {
+    "url": "https://github.com/analacima/adivina-numero/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/analacima/adivina-numero.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^10.0.1",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2"
+  }
+}
