@@ -2,11 +2,11 @@
 
 //valores iniciales
 const INITIAL_SCORE = 20
-const MAX_NUMBER = 50
-const LANGUAGE = 'en' // 'en' or 'es'
+const MAX_NUMBER = 20
+//const LANGUAGE = 'es' // 'en' or 'es'
 
 //mensajes
-
+/*
 const MSG_TOO_LOW_EN = 'Too low!'
 const MSG_TOO_HIGH_EN = 'Too high!'
 const MSG_LOST_EN = 'You lost!'
@@ -19,7 +19,7 @@ const MSG_SCORE_EN = '💯 Score: '
 const MSG_HIGSCORE_EN = '🥇 Highscore: '
 const BTN_AGAIN_EN = 'Again!'
 const BTN_CHECK_EN = 'Check!'
-
+*/
 const MSG_TOO_LOW_ES = '¡Demasiado bajo!'
 const MSG_TOO_HIGH_ES = '¡Demasiado alto!'
 const MSG_LOST_ES = '¡Has perdido!'
@@ -47,6 +47,7 @@ let BTN_AGAIN
 let BTN_CHECK
 
 //asignamos los valores correspondientes al lenguaje seleccionado
+/*
 if (LANGUAGE === 'en') {
   MSG_TOO_LOW = MSG_TOO_LOW_EN
   MSG_TOO_HIGH = MSG_TOO_HIGH_EN
@@ -61,20 +62,23 @@ if (LANGUAGE === 'en') {
   BTN_AGAIN = BTN_AGAIN_EN
   BTN_CHECK = BTN_CHECK_EN
 }
-if (LANGUAGE === 'es') {
-  MSG_TOO_LOW = MSG_TOO_LOW_ES
-  MSG_TOO_HIGH = MSG_TOO_HIGH_ES
-  MSG_LOST = MSG_LOST_ES
-  MSG_CORRECT = MSG_CORRECT_ES
+  */
+//if (LANGUAGE === 'es') {
+MSG_TOO_LOW = MSG_TOO_LOW_ES
+MSG_TOO_HIGH = MSG_TOO_HIGH_ES
+MSG_LOST = MSG_LOST_ES
+MSG_CORRECT = MSG_CORRECT_ES
+MSG_INVALID = MSG_INVALID_ES
+MSG_GUESS = MSG_GUESS_ES
+MSG_BETWEEN = MSG_BETWEEN_ES
+/*
   MSG_START = MSG_START_ES
-  MSG_INVALID = MSG_INVALID_ES
-  MSG_GUESS = MSG_GUESS_ES
-  MSG_BETWEEN = MSG_BETWEEN_ES
   MSG_SCORE = MSG_SCORE_ES
   MSG_HIGSCORE = MSG_HIGSCORE_ES
   BTN_AGAIN = BTN_AGAIN_ES
   BTN_CHECK = BTN_CHECK_ES
-}
+  */
+//}
 
 //colores
 const COLOR_CORRECT = '#60b347'
@@ -82,7 +86,7 @@ const COLOR_DEFAULT = '#222'
 
 //variables
 let score
-let highscore = 0
+let highscore
 let number
 let message
 
@@ -108,25 +112,34 @@ resetDOM()
 //añadimos los eventos a los botones
 checkBtn.addEventListener('click', checkNumber)
 againBtn.addEventListener('click', resetGame)
+//cuando se pulsa la tecla enter, se comprueba el número
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') checkNumber()
+})
 
 //inicializa los datos del juego calculando un número aleatorio y poniendo la puntuación a su valor inicial
 function initData() {
   score = INITIAL_SCORE
   number = Math.trunc(Math.random() * MAX_NUMBER) + 1
+  highscore = localStorage.getItem('highscore') || 0 //si no hay highscore guardado en localstorage, se pone a 0
 }
 
 // resetea todos los elementos del DOM al estado inicial
 function resetDOM() {
-  messageField.textContent = MSG_START
   scoreField.textContent = score
-  numberField.textContent = MSG_GUESS
   guessField.value = ''
+  numberField.textContent = MSG_GUESS
+  highscoreField.textContent = highscore //actualizamos el highscore por si estaba guardado en localstorage
+  /*
+  messageField.textContent = MSG_START
+  
   betweenField.textContent = `${MSG_BETWEEN} ${MAX_NUMBER})`
   scoreLabel.textContent = MSG_SCORE
   highscoreLabel.textContent = MSG_HIGSCORE
   checkBtn.textContent = BTN_CHECK
   againBtn.textContent = BTN_AGAIN
-
+*/
+  checkBtn.disabled = false
   document.body.style.backgroundColor = COLOR_DEFAULT
 }
 
@@ -168,6 +181,7 @@ function resetGame() {
 function changeHighscore() {
   highscore = score
   highscoreField.textContent = highscore
+  localStorage.setItem('highscore', highscore)
 }
 
 //función para mostrar el mensaje de acierto
@@ -191,7 +205,7 @@ function wrongNumber(guess) {
   } else {
     // si se queda sin intentos
     message = MSG_LOST
-    //checkBtn.disabled=true
+    checkBtn.disabled = true
   }
   displayMessage(message)
 }
