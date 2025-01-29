@@ -3,10 +3,10 @@
 //valores iniciales
 const INITIAL_SCORE = 20
 const MAX_NUMBER = 20
-//const LANGUAGE = 'es' // 'en' or 'es'
+const LANGUAGE = 'en' // 'en' or 'es'
 
 //mensajes
-/*
+
 const MSG_TOO_LOW_EN = 'Too low!'
 const MSG_TOO_HIGH_EN = 'Too high!'
 const MSG_LOST_EN = 'You lost!'
@@ -19,7 +19,7 @@ const MSG_SCORE_EN = '💯 Score: '
 const MSG_HIGSCORE_EN = '🥇 Highscore: '
 const BTN_AGAIN_EN = 'Again!'
 const BTN_CHECK_EN = 'Check!'
-*/
+
 const MSG_TOO_LOW_ES = '¡Demasiado bajo!'
 const MSG_TOO_HIGH_ES = '¡Demasiado alto!'
 const MSG_LOST_ES = '¡Has perdido!'
@@ -33,53 +33,6 @@ const MSG_HIGSCORE_ES = '🥇 Mejor puntuación: '
 const BTN_AGAIN_ES = '¡Otra vez!'
 const BTN_CHECK_ES = '¡Comprobar!'
 
-let MSG_TOO_LOW
-let MSG_TOO_HIGH
-let MSG_LOST
-let MSG_CORRECT
-let MSG_START
-let MSG_INVALID
-let MSG_GUESS
-let MSG_BETWEEN
-let MSG_SCORE
-let MSG_HIGSCORE
-let BTN_AGAIN
-let BTN_CHECK
-
-//asignamos los valores correspondientes al lenguaje seleccionado
-/*
-if (LANGUAGE === 'en') {
-  MSG_TOO_LOW = MSG_TOO_LOW_EN
-  MSG_TOO_HIGH = MSG_TOO_HIGH_EN
-  MSG_LOST = MSG_LOST_EN
-  MSG_CORRECT = MSG_CORRECT_EN
-  MSG_START = MSG_START_EN
-  MSG_INVALID = MSG_INVALID_EN
-  MSG_GUESS = MSG_GUESS_EN
-  MSG_BETWEEN = MSG_BETWEEN_EN
-  MSG_SCORE = MSG_SCORE_EN
-  MSG_HIGSCORE = MSG_HIGSCORE_EN
-  BTN_AGAIN = BTN_AGAIN_EN
-  BTN_CHECK = BTN_CHECK_EN
-}
-  */
-//if (LANGUAGE === 'es') {
-MSG_TOO_LOW = MSG_TOO_LOW_ES
-MSG_TOO_HIGH = MSG_TOO_HIGH_ES
-MSG_LOST = MSG_LOST_ES
-MSG_CORRECT = MSG_CORRECT_ES
-MSG_INVALID = MSG_INVALID_ES
-MSG_GUESS = MSG_GUESS_ES
-MSG_BETWEEN = MSG_BETWEEN_ES
-/*
-  MSG_START = MSG_START_ES
-  MSG_SCORE = MSG_SCORE_ES
-  MSG_HIGSCORE = MSG_HIGSCORE_ES
-  BTN_AGAIN = BTN_AGAIN_ES
-  BTN_CHECK = BTN_CHECK_ES
-  */
-//}
-
 //colores
 const COLOR_CORRECT = '#60b347'
 const COLOR_DEFAULT = '#222'
@@ -89,6 +42,53 @@ let score
 let highscore
 let number
 let message
+
+let msg_too_low
+let msg_too_high
+let msg_lost
+let msg_correct
+let msg_start
+let msg_invalid
+let msg_guess
+let msg_between
+let msg_score
+let msg_highscore
+let btn_again
+let btn_check
+
+
+//asignamos los valores correspondientes al lenguaje seleccionado
+
+if (LANGUAGE === 'en') {
+  msg_too_low = MSG_TOO_LOW_EN
+  msg_too_high = MSG_TOO_HIGH_EN
+  msg_lost = MSG_LOST_EN
+  msg_correct = MSG_CORRECT_EN
+  msg_start = MSG_START_EN
+  msg_invalid = MSG_INVALID_EN
+  msg_guess = MSG_GUESS_EN
+  msg_between = MSG_BETWEEN_EN
+  msg_score = MSG_SCORE_EN
+  msg_highscore = MSG_HIGSCORE_EN
+  btn_again = BTN_AGAIN_EN
+  btn_check = BTN_CHECK_EN
+}
+  
+if (LANGUAGE === 'es') {
+  msg_too_low = MSG_TOO_LOW_ES
+  msg_too_high = MSG_TOO_HIGH_ES
+  msg_lost = MSG_LOST_ES
+  msg_correct = MSG_CORRECT_ES
+  msg_invalid = MSG_INVALID_ES
+  msg_guess = MSG_GUESS_ES
+  msg_between = MSG_BETWEEN_ES
+  msg_score = MSG_SCORE_ES
+  msg_highscore = MSG_HIGSCORE_ES
+  btn_again = BTN_AGAIN_ES
+  btn_check = BTN_CHECK_ES
+  msg_start = MSG_START_ES
+}
+
 
 /* seleccionar todos los elementos del DOM que necesitamos */
 const messageField = document.querySelector('.message')
@@ -128,42 +128,36 @@ function initData() {
 function resetDOM() {
   scoreField.textContent = score
   guessField.value = ''
-  numberField.textContent = MSG_GUESS
-  highscoreField.textContent = highscore //actualizamos el highscore por si estaba guardado en localstorage
-  /*
-  messageField.textContent = MSG_START
+  numberField.textContent = msg_guess
+  //actualizamos el highscore por si estaba guardado en localstorage
+  highscoreField.textContent = highscore 
   
-  betweenField.textContent = `${MSG_BETWEEN} ${MAX_NUMBER})`
-  scoreLabel.textContent = MSG_SCORE
-  highscoreLabel.textContent = MSG_HIGSCORE
-  checkBtn.textContent = BTN_CHECK
-  againBtn.textContent = BTN_AGAIN
-*/
+  againBtn.textContent = btn_again
+  betweenField.textContent = `${msg_between} ${MAX_NUMBER})`
+  messageField.textContent = msg_start
+  //scoreLabel.textContent = msg_score
+  //highscoreLabel.textContent = msg_highscore
+  checkBtn.textContent = btn_check
+
   checkBtn.disabled = false
   document.body.style.backgroundColor = COLOR_DEFAULT
 }
 
 function checkNumber() {
   // obtenemos el número pulsado
-  // al convertirlo a número, los caracteres no numéricos pasan a tener el valor 0
   const guess = Number(guessField.value)
   // comprobamos si está en el rango correcto
   if (guess < 1 || guess > MAX_NUMBER) {
-    //mostrar mensaje de error indicando que el número debe estar entre 1 y el máximo (MAX_NUMBER)
-    displayMessage(`${MSG_INVALID}${MAX_NUMBER}`)
+    displayMessage(`${msg_invalid}${MAX_NUMBER}`)
   } else {
     // si no es correcto...
     if (guess !== number) {
-      // mostramos si es demasiado alto o bajo, o si ha perdido
       wrongNumber(guess)
-      // bajamos la puntuación
       scoreDown()
     }
     // si acierta el número
     else {
-      // cambiamos la pantalla y actualizamos los mensajes
       winGame()
-      //comprobamos el highscore y lo actualizamos si es necesario
       if (score > highscore) {
         changeHighscore()
       }
@@ -186,7 +180,7 @@ function changeHighscore() {
 
 //función para mostrar el mensaje de acierto
 function winGame() {
-  displayMessage(MSG_CORRECT)
+  displayMessage(msg_correct)
   numberField.textContent = number
   document.body.style.backgroundColor = COLOR_CORRECT
 }
@@ -200,11 +194,10 @@ function scoreDown() {
 function wrongNumber(guess) {
   if (score > 1) {
     //mostramos si el número es demasiado alto o bajo
-    //messageField.textContent = guess < number ? MSG_TOO_LOW : MSG_TOO_HIGH
-    message = guess < number ? MSG_TOO_LOW : MSG_TOO_HIGH
+    message = guess < number ? msg_too_low : msg_too_high
   } else {
     // si se queda sin intentos
-    message = MSG_LOST
+    message = msg_lost
     checkBtn.disabled = true
   }
   displayMessage(message)
